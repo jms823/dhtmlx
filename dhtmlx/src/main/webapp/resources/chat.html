@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<fieldset>
+	<legend>chatting</legend>
+	<textarea id="chat" rows="20" cols="40"></textarea><br>
+	이름 : <input type="text" id="name"><br>
+	내용 : <input type="text" id="msg" onkeyup="send(1)">
+	<button onclick="send(2)">send</button>
+</fieldset>
+<script>
+var ws;
+
+function doInit(){
+	ws = new WebSocket('ws://192.168.0.5/wstest');
+	ws.onopen = function(event){
+		alert('연결 성공');
+	}
+	ws.onerror = function(event){
+		alert(event);
+	}
+	ws.onmessage = function(event){
+		document.querySelector('#chat').value += event.data + '\n';
+	}
+}
+function send(t){
+	if(t==1){
+		var key = event.which || event.keyCode;
+		if(key!=13){
+			return;
+		}
+	}
+	var name = document.querySelector('#name').value;
+	var msg  = document.querySelector('#msg').value;
+	ws.send(name + ' : ' + msg);
+	document.querySelector('#chat').value += '나 : ' + msg + '\n';
+	document.querySelector('#msg').value = '';
+}
+window.addEventListener('load',doInit);
+</script>
+</body>
+</html>

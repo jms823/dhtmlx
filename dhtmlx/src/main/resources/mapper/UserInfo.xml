@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SQL.USERINFO">
+
+	<select id="selectUserInfoList" resultType="ui">
+		select * from user_info
+	</select>
+
+	<select id="selectUserInfo" resultType="ui">
+		select * from user_info
+		<where>
+			<if test="uiNum!=null">
+			uiNum = #{uiNum}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertUserInfo" parameterType="ui">
+		insert into
+		user_info(uiNum, uiName, uiId, uiPwd, uiDesc)
+		values(seq_uinum.nextval, #{uiName}, #{uiId}, #{uiPwd}, #{uiDesc})
+	</insert>
+	
+	<update id="updateUserInfo" parameterType="ui">
+  		update user_info
+  	<set>
+  		<if test="uiName!=null">uiName = #{uiName},</if>
+  		<if test="uiId!=null">uiId = #{uiId},</if>
+  		<if test="uiPwd!=null">uiPwd = #{uiPwd},</if>
+  		<if test="uiDesc!=null">uiDesc = #{uiDesc}</if>
+  	</set>
+  		where uiNum=#{uiNum}
+  </update>
+
+  <delete id="deleteUserInfo" parameterType="int">
+  	delete from user_info
+  	where uiNum=#{uiNum}
+  </delete>  
+</mapper>

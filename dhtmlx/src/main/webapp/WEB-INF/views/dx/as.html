@@ -1,0 +1,44 @@
+<body>
+<form id="form1" name="form1" method="post">
+아이디 : <input type='text' id='id' name='id'>
+비밀번호 : <input type='password' id='pwd' name='pwd'>
+<input type='button' id='login'>
+</form>
+<div id="message"></div>
+</body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#login").click(function() {
+		var form_data = {
+			id: $("#id").val(),
+			pwd: $("#pwd").val(),
+			is_ajax: 1
+		};
+		$.ajax({
+			type: "POST",
+			url: "/user/login",
+			data: form_data,
+			success: function(response) {
+				if(response == 'success') {
+					response.attr('login','ok');
+				}
+				else {
+					response.attr('login','fail');
+				}
+			},
+		  	error: function(response) {
+              console.log(response);
+            },
+            complete: function(response){
+            	var loginResult = response.attr('login');
+            	if(loginResult=='ok'){
+            		alert('로그인 성공');
+            	}else{
+            		alert('로그인 실패');
+            	}
+            }
+		});
+	});
+});
+</script>
